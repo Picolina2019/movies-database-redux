@@ -1,0 +1,3 @@
+export const TOGGLE_LOGIN_MODAL = 'TOGGLE_LOGIN_MODAL'
+export const LOGOUT = 'LOGOUT'
+export const UPDATE_AUTH = 'UPDATE_AUTH'
