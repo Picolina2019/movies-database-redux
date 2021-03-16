@@ -23,16 +23,16 @@ export default class LoginForm extends React.Component {
   };
 
   handleBlur = (e) => {
-    const { name } = e.target;
-
+    const {name}= e.target
+  
     const errors = this.validateFields();
-    let error = errors[name];
-
+    let error = errors[name]
+   
     if (error) {
       this.setState((prevState) => ({
         errors: {
           ...prevState.errors,
-          [name]: error,
+          [name]:error
         },
       }));
     }
@@ -88,7 +88,8 @@ export default class LoginForm extends React.Component {
           }
         );
       })
-      .then((data) => {
+      .then(data => {
+  
         this.props.handleSessionId(data.session_id);
         return fetchApi(
           `${API_URL}/account?api_key=${API_KEY_3}&session_id=${data.session_id}`
@@ -98,7 +99,7 @@ export default class LoginForm extends React.Component {
               submitting: false,
             },
             () => {
-              this.props.handleUser(user);
+              this.props.handleUser(user)
               //  this.props.updateAuth(user, session_id);
             }
           );
