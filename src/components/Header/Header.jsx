@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from '../Login/Login'
 
-import UserMenu from './UserMenu';
+import {UserMenu} from './UserMenu';
 
 
 function Header({handleSessionId, handleUser,updateAuth, user, onLogout, session_id, toggleLoginModal, showModal}) {

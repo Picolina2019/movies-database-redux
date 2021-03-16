@@ -45,6 +45,13 @@ class App extends React.Component {
       session_id,
     });
   };
+  onLogout=()=>{
+    cookies.remove()
+    this.setState({
+      user:null,
+      session_id:null
+    })
+  }
   componentDidMount() {
     const session_id = cookies.get('session_id');
     if (session_id) {
@@ -52,6 +59,7 @@ class App extends React.Component {
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       ).then((user) => {
         this.handleUser(user);
+        this.handleSessionId(session_id);
       });
     }
   }
@@ -70,7 +78,9 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <AppContext.Provider value={{
-          user:user,
+          user,
+          onLogout:this.onLogout,
+          session_id
         
         }}>
           <Header

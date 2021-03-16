@@ -1,64 +1,42 @@
-import React, { useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
 } from 'reactstrap';
-import {AppContext} from '../../App'
-// import { API_KEY_3, API_URL, fetchApi } from '../../api/api';
+import CallApi from '../../api/api';
+import { AppContext } from '../../App';
 
-const UserMenu =({user}) =>{
- const [ dropdownOpen, setDropdownOpen] = useState(false)
- 
+export const UserMenu = () => {
+  const { user, session_id, onLogout } = useContext(AppContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const toggle = () => {
-    setDropdownOpen(!dropdownOpen)
+    setDropdownOpen(!dropdownOpen);
   };
-  // handleLogout=()=>{
-  //     const { session_id, onLogout } = this.props;
-  //   fetchApi(`${API_URL}/authentication/session?api_key=${API_KEY_3}`, {
-  //     method: 'DELETE',
-  //     mode: 'cors',
-  //     headers: {
-  //       'Content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       session_id: session_id,
-  //     }),
-  //   }).then(() => {
-  //      onLogout();
-  //   });
-   
-  // }
-  // render() {
-   
-  //   const { user } = this.props;
-  //   const {dropdownOpen} = this.state
-  //   const {toggle,handleLogout} = this
-    return (
-      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-        <DropdownToggle
-          tag='div'
-          data-toggle='dropdown'
-          area-expanded={dropdownOpen}
-          onClick={toggle}>
-          <div onClick={toggle}> {user.username}</div>
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem 
-          // onClick={onLogout}
-          >Exit</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    );
-  }
+  const handleLogout = () => {
+    CallApi.delete('/authentication/session', {
+      body: {
+        session_id: session_id,
+      },
+    }).then(() => {
+      onLogout();
+    });
+  };
 
- const ContainerUser =(props)=>{
-  return <AppContext.Consumer>
-   {(context)=>{
-     return <UserMenu user={context.user} {...props}/>
-   }}
-  </AppContext.Consumer>
-}
-ContainerUser.displayName = 'ContainerUser';
-export default ContainerUser;
+  return (
+    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+      <DropdownToggle
+        tag='div'
+        data-toggle='dropdown'
+        area-expanded={dropdownOpen}
+        onClick={toggle}>
+        <div onClick={toggle}> {user.username}</div>
+      </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem onClick={handleLogout}>Exit</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
+};
