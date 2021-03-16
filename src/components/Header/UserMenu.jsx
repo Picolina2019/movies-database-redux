@@ -5,9 +5,10 @@ import {
   DropdownMenu,
   DropdownToggle,
 } from 'reactstrap';
+import {AppContext} from '../../App'
 // import { API_KEY_3, API_URL, fetchApi } from '../../api/api';
 
-const UserMenu =({onLogout, user}) =>{
+const UserMenu =({user}) =>{
  const [ dropdownOpen, setDropdownOpen] = useState(false)
  
   const toggle = () => {
@@ -44,10 +45,20 @@ const UserMenu =({onLogout, user}) =>{
           <div onClick={toggle}> {user.username}</div>
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem onClick={onLogout}>Exit</DropdownItem>
+          <DropdownItem 
+          // onClick={onLogout}
+          >Exit</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );
   }
 
-export default UserMenu;
+ const ContainerUser =(props)=>{
+  return <AppContext.Consumer>
+   {(context)=>{
+     return <UserMenu user={context.user} {...props}/>
+   }}
+  </AppContext.Consumer>
+}
+ContainerUser.displayName = 'ContainerUser';
+export default ContainerUser;

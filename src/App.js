@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { API_KEY_3, API_URL, fetchApi } from './api/api';
@@ -7,6 +7,7 @@ import MoviePage from './pages/MoviesPage/MoviePage';
 import MoviesPage from './pages/MoviesPage/MoviesPage';
 
 const cookies = new Cookies();
+export const AppContext = createContext()
 
 class App extends React.Component {
   //   state = {
@@ -68,20 +69,26 @@ class App extends React.Component {
     console.log(session_id);
     return (
       <BrowserRouter>
-        <Header
-          handleSessionId={this.handleSessionId}
-          handleUser={this.handleUser}
-          user={user}
-          updateAuth={updateAuth}
-          onLogout={onLogout}
-          session_id={session_id}
-          toggleLoginModal={toggleLoginModal}
-          showModal={showLoginModal}
-        />
+        <AppContext.Provider value={{
+          user:user,
+        
+        }}>
+          <Header
+            handleSessionId={this.handleSessionId}
+            handleUser={this.handleUser}
+            user={user}
+            updateAuth={updateAuth}
+            onLogout={onLogout}
+            session_id={session_id}
+            toggleLoginModal={toggleLoginModal}
+            showModal={showLoginModal}
+          />
 
-        <Route exact path='/' component={MoviesPage} />
-        <Route path='/movie/:id' component={MoviePage} />
-      </BrowserRouter>
+          <Route exact path='/' component={MoviesPage} />
+          <Route path='/movie/:id' component={MoviePage} />
+            </AppContext.Provider>
+        </BrowserRouter>
+    
     );
   }
 }
