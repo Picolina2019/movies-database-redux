@@ -1,27 +1,16 @@
-import React ,{useState} from 'react';
+import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
+import { withAuth } from '../../hoc/withAuth';
 import LoginForm from './LoginForm';
 
-function Login({handleUser, handleSessionId}) {
- const [showModal, setShowModal]= useState(false)
-const toggleLoginModal=()=>{
-  setShowModal(!showModal)
-}
+function Login({ auth, authActions }) {
   return (
-    <>
-      <button
-        className='btn btn-outline-info'
-        type='button'
-        onClick={toggleLoginModal}>
-        Login
-      </button>
-      <Modal isOpen={showModal} toggle={toggleLoginModal}>
-        <ModalBody>
-          <LoginForm handleUser={handleUser} handleSessionId={handleSessionId} />
-        </ModalBody>
-      </Modal>
-    </>
+    <Modal isOpen={auth.showLoginModal} toggle={authActions.toggleLoginModal}>
+      <ModalBody>
+        <LoginForm />
+      </ModalBody>
+    </Modal>
   );
 }
 
-export default Login;
+export default withAuth(Login);

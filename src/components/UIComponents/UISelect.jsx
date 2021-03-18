@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React from 'react';
 
 export default class UISelect extends React.Component {
   static propTypes = {
@@ -8,10 +7,8 @@ export default class UISelect extends React.Component {
     onChange: PropTypes.func.isRequired,
   };
 
-
   render() {
     const { id, name, value, onChange, labelText, children } = this.props;
-    console.log('UISelect render');
     return (
       <div className='form-group'>
         <label htmlFor={id}>{labelText}</label>:

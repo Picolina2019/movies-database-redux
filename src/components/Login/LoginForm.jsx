@@ -1,7 +1,8 @@
 import React from 'react';
-import CallApi, { API_KEY_3, API_URL, fetchApi } from '../../api/api';
+import CallApi from '../../api/api';
+import { withAuth } from '../../hoc/withAuth';
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
   state = {
     username: '',
     password: '',
@@ -24,10 +25,8 @@ export default class LoginForm extends React.Component {
 
   handleBlur = (e) => {
     const { name } = e.target;
-
     const errors = this.validateFields();
     let error = errors[name];
-
     if (error) {
       this.setState((prevState) => ({
         errors: {
@@ -40,14 +39,12 @@ export default class LoginForm extends React.Component {
 
   validateFields = () => {
     const errors = {};
-
     if (this.state.username === '') {
       errors.username = 'username can not be empty';
     }
     if (this.state.password === '') {
       errors.password = 'password can not be empty';
     }
-
     return errors;
   };
 
@@ -55,6 +52,7 @@ export default class LoginForm extends React.Component {
     this.setState({
       submitting: true,
     });
+    let session_id = null;
     CallApi.get('/authentication/token/new')
       .then((data) => {
         return CallApi.post('/authentication/token/validate_with_login', {
@@ -73,21 +71,19 @@ export default class LoginForm extends React.Component {
         });
       })
       .then((data) => {
-        this.props.handleSessionId(data.session_id);
-        return CallApi.get(
-          '/account',{
-            params:{
-              session_id: data.session_id
-            }
-          }
-        ).then((user) => {
+        session_id = data.session_id;
+        return CallApi.get('/account', {
+          params: {
+            session_id: data.session_id,
+          },
+        }).then((user) => {
           this.setState(
             {
               submitting: false,
             },
             () => {
-              this.props.handleUser(user);
-              //  this.props.updateAuth(user, session_id);
+              this.props.authActions.updateAuth({ user, session_id });
+              this.props.authActions.toggleLoginModal();
             }
           );
         });
@@ -168,6 +164,7 @@ export default class LoginForm extends React.Component {
             disabled={submitting}>
             Enter
           </button>
+          {submitting && <div className='text-center'>Loading...</div>}
           {errors.base && (
             <div className='invalid-feedback text-center'>{errors.base}</div>
           )}
@@ -176,3 +173,5 @@ export default class LoginForm extends React.Component {
     );
   }
 }
+
+export default withAuth(LoginForm);

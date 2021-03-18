@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UISelect from '../UIComponents/UISelect';
 
 export default class SortBy extends Component {
   static defaultProps = {
@@ -22,26 +23,21 @@ export default class SortBy extends Component {
     ],
   };
   render() {
-    const { sort_by, onChangeFilters,options } = this.props;
+    const { sort_by, onChangeFilters, options } = this.props;
 
     return (
-      <div className='form-group'>
-        <label htmlFor='sort_by'>Sort by:</label>
-        <select
-          className='form-control'
-          id='sort_by'
-          value={sort_by}
-          onChange={onChangeFilters}
-          name='sort_by'>
-          {options.map((option) => {
-            return (
-              <option key={option.label} value={option.value}>
-                {option.label}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      <UISelect
+        id='sort_by'
+        name='sort_by'
+        value={sort_by}
+        onChange={onChangeFilters}
+        labelText='Sort By '>
+        {options.map((option) => (
+          <option key={option.label} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </UISelect>
     );
   }
 }

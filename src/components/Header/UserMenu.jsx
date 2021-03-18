@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dropdown,
   DropdownItem,
@@ -6,10 +6,9 @@ import {
   DropdownToggle,
 } from 'reactstrap';
 import CallApi from '../../api/api';
-import { AppContext } from '../../App';
+import { withAuth } from '../../hoc/withAuth';
 
-export const UserMenu = () => {
-  const { user, session_id, onLogout } = useContext(AppContext);
+const UserMenu = ({ auth, authActions }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => {
@@ -18,21 +17,20 @@ export const UserMenu = () => {
   const handleLogout = () => {
     CallApi.delete('/authentication/session', {
       body: {
-        session_id: session_id,
+        session_id: auth.session_id,
       },
     }).then(() => {
-      onLogout();
+      authActions.onLogout();
     });
   };
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle
-        tag='div'
-        data-toggle='dropdown'
-        area-expanded={dropdownOpen}
-        onClick={toggle}>
-        <div onClick={toggle}> {user.username}</div>
+      <DropdownToggle tag='div' data-toggle='dropdown' onClick={toggle}>
+        <div style={{ cursor: 'pointer' }} onClick={toggle}>
+          {' '}
+          {auth.user.username}
+        </div>
       </DropdownToggle>
       <DropdownMenu>
         <DropdownItem onClick={handleLogout}>Exit</DropdownItem>
@@ -40,3 +38,5 @@ export const UserMenu = () => {
     </Dropdown>
   );
 };
+
+export default withAuth(UserMenu);
