@@ -1,8 +1,8 @@
 import queryString from 'query-string';
-export const API_KEY_4 =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZjdmZGQ1Y2NmMDgzZjJlNzRlZDE4YWQzNmZjOTg1MyIsInN1YiI6IjVlYmVhYjY3MTVhNGExMDAxYzllODQ1OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bZhJmqNgYvTJMKuczqKGbgx7qjpN-As3kcfcZsZFbGY';
-export const API_KEY_3 = 'ff7fdd5ccf083f2e74ed18ad36fc9853';
-export const API_URL = 'https://api.themoviedb.org/3';
+
+const API_KEY_3 = process.env.REACT_APP_API_KEY_3;
+const API_URL = process.env.REACT_APP_API_URL;
+const API_KEY_4 = process.env.REACT_APP_API_KEY_4;
 
 export const fetchApi = (url, options = {}) => {
   return new Promise((resolve, reject) => {

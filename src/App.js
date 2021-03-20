@@ -12,10 +12,13 @@ class App extends React.Component {
     if (auth.session_id) {
       authActions.fetchAuth(auth.session_id);
     }
+     console.log(auth.session_id);
   }
+ 
 //error on movies load and movie page
   render() {
     const { auth } = this.props;
+     console.log(auth.session_id);
     return (
       <BrowserRouter>
       {auth.isLoading ? <div>Loading...</div> :

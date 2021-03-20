@@ -2,7 +2,7 @@ import CallApi from '../../api/api';
 import * as types from './auth.types';
 
 export const fetchAuth = (session_id) => (dispatch) => {
-  CallApi.get('/accont', {
+  CallApi.get('/account', {
     params: {
       session_id,
     },
