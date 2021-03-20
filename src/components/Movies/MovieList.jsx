@@ -3,8 +3,10 @@ import React from 'react';
 import {MoviesHOC} from '../HOC/MoviesHOC';
 import MovieItem from './MovieItem';
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies,error }) => {
   return (
+    <>
+    {error && <div>{error}</div>}
     <div className='row'>
       {movies.map((movie) => {
         return (
@@ -14,6 +16,7 @@ const MovieList = ({ movies }) => {
         );
       })}
     </div>
+    </>
   );
 };
 MovieList.propTypes = {

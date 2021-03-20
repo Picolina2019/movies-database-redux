@@ -6,6 +6,7 @@ export const MoviesHOC = (Component) =>
   class MoviesHOC extends React.Component {
     state = {
       movies: [],
+      error:null
     };
 
     getMovies = (filters, page) => {
@@ -30,7 +31,9 @@ export const MoviesHOC = (Component) =>
         this.setState({
           movies: data.results,
         });
-      });
+      }).catch(error=>{
+          this.setError('error!')
+      })
     };
 
     componentDidMount() {
@@ -49,8 +52,8 @@ export const MoviesHOC = (Component) =>
     }
 
     render() {
-      const { movies } = this.state;
+      const { movies,error } = this.state;
 
-      return <Component movies={movies} />;
+      return <Component movies={movies} error={error}/>;
     }
   };
