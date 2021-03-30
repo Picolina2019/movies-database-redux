@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../App.css';
+import { withAuth } from '../../hoc/withAuth';
 
-const MovieItem = ({ item }) => {
+const MovieItem = ({ item, auth }) => {
+  const [clicked, setClicked] = useState(false);
+  const handleClick = () => {
+    setClicked(true);
+  };
   const imagePath = item.backdrop_path || item.poster_path;
   return (
     <div className='card' style={{ width: '100%' }}>
@@ -17,13 +22,22 @@ const MovieItem = ({ item }) => {
       />
 
       <div className='card-body'>
-        <Link to={`/movie/${item.id}`} className='card-title'>
-          {item.title}
-        </Link>
-
+        <>
+          <Link
+            to={auth.user ? `/movie/${item.id}` : ``}
+            onClick={handleClick}
+            className='card-title'>
+            {item.title}
+          </Link>
+          {!auth.user && clicked && (
+            <div style={{ color: 'red', fontStyle: 'italic' }}>
+              login first, please{' '}
+            </div>
+          )}
+        </>
         <div className='card-text'>Rating: {item.vote_average}</div>
       </div>
     </div>
   );
 };
-export default MovieItem;
+export default withAuth(MovieItem);
